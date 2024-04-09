@@ -1,0 +1,72 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #a2d4ff; /* Color de fondo gris claro */
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+input[type="text"],
+button {
+    margin-top: 10px;
+}
+
+  /* Estilos para el área de mensajes */
+#messages {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#messages li {
+    margin-bottom: 5px;
+}
+
+  /* Estilos para el área de mensajes privados */
+#privateMessages {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#privateMessages li {
+    margin-bottom: 5px;
+}
+
+  /* Estilos para el botón */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+  /* Estilos para la entrada de texto */
+input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+  /* Estilos para el área del título */
+h2 {
+    color: #007bff;
+}
