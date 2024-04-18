@@ -22,12 +22,12 @@ let conexiones = {
         {
             "ABC":[
                 {
-                    "identificador":"12345",
+                    "identificador":"Sebastián",
                     "habilitado":true,
                     "socketId": "abc12345"
                 },
                 {
-                    "identificador":"3333",
+                    "identificador":"Carlos",
                     "habilitado":true,
                     "socketId": "abc33345"
                 }
@@ -35,12 +35,12 @@ let conexiones = {
             
             "XYZ":[
                 {
-                    "identificador":"5555",
+                    "identificador":"Jhonatan",
                     "habilitado":true,
                     "socketId": "abasd2345"
                 },
                 {
-                    "identificador":"66666",
+                    "identificador":"Carlos",
                     "habilitado":true,
                     "socketId": "asd98987"
                 }
