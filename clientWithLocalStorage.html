@@ -1,110 +1,107 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  </head>
+  
+  <body>
+    <section class="container">
+      <h2>En sesión</h2>
+      <label id="usernameInSession"></label>
+    </section>
 
-/* método localStorage para almacenar el nombre de usuario y restaurarlo después de recargar la página */
-
-<head>
-  <title>Chat</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-</head>
-
-<body>
-  <section class="container">
-    <h2>En sesión</h2>
-    <label id="usernameInSession"></label>
-  </section>
-
-  <section class="container">
-    <h2>Chat Room</h2>
-    <ul id="messages"></ul>
-    <input id="messageInput" type="text" autocomplete="off" class="form-control" />
-    <button onclick="sendMessage()" class="btn btn-primary">
-      Send General Message
-    </button>
-  </section>
-
-  <section class="container">
-    <h2>Private Chat</h2>
-    <input id="recipientInput" placeholder="Recipient's username" class="form-control" />
-    <input id="privateMessageInput" autocomplete="off" type="text" class="form-control" />
-    <button onclick="sendPrivateMessage()" class="btn btn-primary">
-      Send Private Message
-    </button>
-    <ul id="privateMessages"></ul>
-  </section>
-
-  <script>
-    const socket = io("http://localhost:3010");
-
-    let currentUsername = localStorage.getItem("ChatUsername");
-    if (!currentUsername) {
-      currentUsername = prompt("Enter your username:");
-      if (currentUsername) {
-        socket.emit("join", currentUsername);
-        localStorage.setItem("ChatUsername", currentUsername);
-        alert("User joined:" + currentUsername);
+    <section id="recargarPagina">
+      <button onclick="reloadPage()" class="btn btn-primary">Reload Page</button>
+    </section>
+  
+    <section class="container">
+      <h2>Chat Room</h2>
+      <ul id="messages"></ul>
+      <input id="messageInput" type="text" autocomplete="off" class="form-control" />
+      <button onclick="sendMessage()" class="btn btn-primary">
+        Send General Message
+      </button>
+    </section>
+  
+    <section class="container">
+      <h2>Private Chat</h2>
+      <input id="recipientInput" placeholder="Recipient's username" class="form-control" />
+      <input id="privateMessageInput" autocomplete="off" type="text" class="form-control" />
+      <button onclick="sendPrivateMessage()" class="btn btn-primary">
+        Send Private Message
+      </button>
+      <ul id="privateMessages"></ul>
+    </section>
+  
+    <script>
+      const socket = io("http://localhost:3010");
+  
+      let currentUsername = localStorage.getItem("ChatUsername");
+      if (!currentUsername) {
+        currentUsername = prompt("Enter your username:");
+        if (currentUsername) {
+          socket.emit("join", currentUsername);
+          localStorage.setItem("ChatUsername", currentUsername);
+          alert("User joined:" + currentUsername);
+        }
       }
-    }
-
-    document.getElementById("usernameInSession").innerHTML = currentUsername;
-
-    socket.on("messageFromServer", (data) => {
-      displayMessage(data);
-    });
-
-    socket.on("privateMessageFromServer", (data) => {
-      displayPrivateMessage(data);
-    });
-
-    function sendMessage() {
-      const messageInput = document.getElementById("messageInput");
-      const message = messageInput.value.trim();
-      if (message !== "") {
-        socket.emit("messageFromClient", message);
-        messageInput.value = "";
+  
+      document.getElementById("usernameInSession").innerHTML = currentUsername;
+  
+      socket.on("messageFromServer", (data) => {
+        displayMessage(data);
+      });
+  
+      socket.on("privateMessageFromServer", (data) => {
+        displayPrivateMessage(data);
+      });
+  
+      function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value.trim();
+        if (message !== "") {
+          socket.emit("messageFromClient", message);
+          messageInput.value = "";
+        }
       }
-    }
-
-    function sendPrivateMessage() {
-      const recipientInput = document.getElementById("recipientInput");
-      const privateMessageInput = document.getElementById(
-        "privateMessageInput"
-      );
-      const recipient = recipientInput.value.trim();
-      const message = privateMessageInput.value.trim();
-      if (recipient && message) {
-        socket.emit("privateMessageFromClient", { recipient, message });
-        displayPrivateMessage({ user: "You", recipient, message });
-        privateMessageInput.value = "";
+  
+      function sendPrivateMessage() {
+        const recipientInput = document.getElementById("recipientInput");
+        const privateMessageInput = document.getElementById(
+          "privateMessageInput"
+        );
+        const recipient = recipientInput.value.trim();
+        const message = privateMessageInput.value.trim();
+        if (recipient && message) {
+          socket.emit("privateMessageFromClient", { recipient, message });
+          displayPrivateMessage({ user: "You", recipient, message });
+          privateMessageInput.value = "";
+        }
       }
-    }
+  
+      function displayMessage(data) {
+        const messages = document.getElementById("messages");
+        const li = document.createElement("li");
+        li.innerHTML = `${data.user}: ${data.message}`;
+        messages.appendChild(li);
+      }
+  
+      function displayPrivateMessage(data) {
+        const privateMessages = document.getElementById("privateMessages");
+        const li = document.createElement("li");
+        li.innerHTML = `${data.user} -> ${data.recipient}: ${data.message}`;
+        privateMessages.appendChild(li);
+      }
 
-    function displayMessage(data) {
-      const messages = document.getElementById("messages");
-      const li = document.createElement("li");
-      li.innerHTML = `${data.user}: ${data.message}`;
-      messages.appendChild(li);
-    }
+      /* método localStorage para almacenar el nombre de usuario y restaurarlo después de recargar la página */
+      /* botón "Reload Page" que llama a la función reloadPage(), la cual simplemente recarga la página cuando se hace clic en él. Esto mantendrá al usuario en el mismo estado del servidor después de la recarga, ya que el nombre de usuario se almacena en el localStorage. */
+  
+      function reloadPage() {
+        location.reload();
+      }
 
-    function displayPrivateMessage(data) {
-      const privateMessages = document.getElementById("privateMessages");
-      const li = document.createElement("li");
-      li.innerHTML = `${data.user} -> ${data.recipient}: ${data.message}`;
-      privateMessages.appendChild(li);
-    }
-
-    /* botón "Reload Page" que llama a la función reloadPage(), la cual simplemente recarga la página cuando se hace clic en él. Esto mantendrá al usuario en el mismo estado del servidor después de la recarga, ya que el nombre de usuario se almacena en el localStorage. */
-
-    // Método para recargar la página
-    function reloadPage() {
-      location.reload();
-    }
-  </script>
-
-  <!-- Añadir un botón para recargar la página -->
-  <button onclick="reloadPage()" class="btn btn-secondary">Reload Page</button>
-</body>
-
+    </script>
+  </body>
 </html>
-
