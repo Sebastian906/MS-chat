@@ -1,16 +1,17 @@
 <html>
     <head>
         <!-- Add title to the chat login page -->
-        <title>Chat</title>
+        <title>Login</title>
         <!-- Add tag for bootstrap css -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
 
         <!-- Add a responsive and pretty hero section with image to the init of login form -->
         <section class="hero container">
             <div class="hero-inner">
-                <h1>Chat</h1>
+                <h1>Login</h1>
                 <p>Join the chat room and start talking with your friends</p>
             </div>
         </section>
@@ -30,12 +31,15 @@
                     <input type="text" class="form-control" id="codeRoom" aria-describedby="codeRoomHelp" placeholder="Enter code room">
                     <small id="codeRoomHelp" class="form-text text-muted">We'll never share your code room with anyone else.</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Join Chat</button>
+                <ul>
+                    <button type="submit" class="btn btn-primary"><a href="index.html">Join Chat</a></button>
+                </ul>
+                
             </form>
         </section>
         <!-- footer section -->
         <footer class="container">
-            <p>Chat &copy; 2021</p>
+            <p>Chat &copy; 2024</p>
         </footer>
 
     </body>
